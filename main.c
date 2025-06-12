@@ -3,6 +3,7 @@
 #include "include/Utils.h"
 #include <string.h>
 #include <stdbool.h>
+#include "include/CommandPreprocessing.h"
 
 
 int main(void) {
@@ -11,12 +12,28 @@ int main(void) {
         print_prompt();
         read_input(input_buffer);
 
-        if (strcmp(input_buffer->buffer, ".exit") == 0) {
-            close_input_buffer(input_buffer);
-            exit(EXIT_SUCCESS);
+        if (input_buffer->buffer[0] == '.') {
+            switch (do_meta_command(input_buffer)) {
+                case META_COMMAND_SUCCESS:
+                    break;
+                case META_COMMAND_UNRECOGNIZED_COMMAND:
+                    printf("Unrecognized command '%s'\n", input_buffer->buffer);
+                    continue;
+            }
         }
-        else {
-            printf("Unrecognized command '%s'.\n", input_buffer->buffer);
+
+        Statement statement;
+        switch (prepare_statement(input_buffer, &statement)) {
+            case (PREPARE_SUCCESS):
+                break;
+                printf("Unrecognized keyword at start of '%s'.\n",
+                                               input_buffer->buffer);
+                continue;
+
+
         }
+
+        execute_statement(&statement);
+        printf("Executed.\n");
     }
 }
