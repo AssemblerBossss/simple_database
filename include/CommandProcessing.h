@@ -1,5 +1,9 @@
-#ifndef DATABASE_COMMAND_PREPROCESSING_H
-#define DATABASE_COMMAND_PREPROCESSING_H
+#ifndef DATABASE_COMMAND_PROCESSING_H
+#define DATABASE_COMMAND_PROCESSING_H
+
+#include <string.h>
+
+#include "InputBuffer.h"
 
 /*
  * Перечисление для возврата статуса выполнения метакоманд.
@@ -18,11 +22,11 @@ typedef enum {
     PREPARE_UNRECOGNIZED_STATEMENT  // Введенный запрос не соответствует ни одному известному типу SQL-запроса
 } PrepareResult;
 
+MetaCommandResult do_meta_command(InputBuffer* input_buffer);
 
 
 
 
 
 
-
-#endif //DATABASE_COMMAND_PREPROCESSING_H
+#endif //DATABASE_COMMAND_PROCESSING_H

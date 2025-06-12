@@ -3,7 +3,7 @@
 #include "include/Utils.h"
 #include <string.h>
 #include <stdbool.h>
-#include "include/CommandPreprocessing.h"
+#include "include/CommandProcessing.h"
 
 
 int main(void) {
