@@ -13,16 +13,7 @@ typedef enum {
     META_COMMAND_UNRECOGNIZED_COMMAND // Введенная команда не является известной метакомандой
 } MetaCommandResult;
 
-/*
- * Перечисление для возврата статуса подготовки SQL-запроса.
- * Используется на этапе разбора и подготовки запроса перед выполнением.
- */
-typedef enum {
-    PREPARE_SUCCESS,                // SQL-запрос успешно распознан и подготовлен к выполнению
-    PREPARE_UNRECOGNIZED_STATEMENT  // Введенный запрос не соответствует ни одному известному типу SQL-запроса
-} PrepareResult;
-
-MetaCommandResult do_meta_command(InputBuffer* input_buffer);
+MetaCommandResult do_meta_command(InputBuffer *input_buffer);
 
 
 

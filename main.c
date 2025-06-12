@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "include/CommandProcessing.h"
+#include "include/Statement.h"
 
 
 int main(void) {
@@ -26,9 +27,11 @@ int main(void) {
         switch (prepare_statement(input_buffer, &statement)) {
             case (PREPARE_SUCCESS):
                 break;
+            case (PREPARE_UNRECOGNIZED_STATEMENT):
                 printf("Unrecognized keyword at start of '%s'.\n",
                                                input_buffer->buffer);
                 continue;
+
 
 
         }

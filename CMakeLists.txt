@@ -6,5 +6,5 @@ set(CMAKE_C_STANDARD 23)
 add_executable(database main.c
         src/InputBuffer.c
         src/Utils.c
-        include/CommandProcessing.h
-        src/CommandProcessing.c)
+        src/CommandProcessing.c
+        src/Statement.c)
