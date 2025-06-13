@@ -1,5 +1,5 @@
-#ifndef DATABASE_INPUTBUFFER_H
-#define DATABASE_INPUTBUFFER_H
+#ifndef DATABASE_INPUT_BUFFER_H
+#define DATABASE_INPUT_BUFFER_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,4 +40,4 @@ void read_input(InputBuffer* input_buffer);
  */
 void close_input_buffer(InputBuffer* input_buffer);
 
-#endif //DATABASE_INPUTBUFFER_H
+#endif //DATABASE_INPUT_BUFFER_H

@@ -4,7 +4,12 @@ project(database C)
 set(CMAKE_C_STANDARD 23)
 
 add_executable(database main.c
-        src/InputBuffer.c
+        src/input_buffer.c
         src/Utils.c
         src/CommandProcessing.c
-        src/Statement.c)
+        src/statement_processor.c
+        include/table.h
+        include/row_serialization.h
+        src/table.c
+        src/row_serialization.c
+)

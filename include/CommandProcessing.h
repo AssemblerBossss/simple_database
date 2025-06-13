@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-#include "InputBuffer.h"
+#include "input_buffer.h"
 
 /*
  * Перечисление для возврата статуса выполнения метакоманд.

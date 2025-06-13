@@ -2,7 +2,9 @@
 #define DATABASE_UTILS_H
 
 #include "stdio.h"
+#include "types.h"
 
-void print_prompt();
+inline void print_prompt();
+void print_row(Row* row);
 
 #endif //DATABASE_UTILS_H
