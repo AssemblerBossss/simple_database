@@ -56,7 +56,19 @@ void *get_page(Pager *pager, uint32_t page_number);
  */
 Table *db_open(const char *filename);
 
-void free_table(Table *table);
+/**
+ * @brief Закрывает таблицу и освобождает все ресурсы
+ *
+ * Функция выполняет:
+ * - Сброс всех страниц данных на диск (как полных, так и частичных)
+ * - Закрытие файлового дескриптора
+ * - Освобождение памяти, занятой страницами, Pager и Table
+ *
+ * @param[in] table Указатель на таблицу для закрытия
+ *
+ * @note Частичные страницы обрабатываются отдельно от полных
+ */
+void db_close(Table *table);
 
 void* row_slot(Table *table, uint32_t row_number);
 
