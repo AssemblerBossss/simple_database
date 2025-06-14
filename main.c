@@ -2,7 +2,7 @@
 #include "include/input_buffer.h"
 #include "include/Utils.h"
 #include <stdbool.h>
-#include "include/CommandProcessing.h"
+#include "include/command_processing.h"
 #include "include/prepare_result.h"
 #include "include/statement_processor.h"
 #include "include/statement.h"
@@ -10,7 +10,7 @@
 
 
 int main(void) {
-    Table *table = new_table();
+    Table *table = db_open("test.db");
     InputBuffer *input_buffer = new_input_buffer();
     while(true) {
         print_prompt();
@@ -55,5 +55,5 @@ int main(void) {
         }
     }
 
-    free_table(table);
+    db_close(table);
 }

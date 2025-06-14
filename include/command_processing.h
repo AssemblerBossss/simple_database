@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "input_buffer.h"
+#include "table.h"
 
 /*
  * Перечисление для возврата статуса выполнения метакоманд.
@@ -13,7 +14,7 @@ typedef enum {
     META_COMMAND_UNRECOGNIZED_COMMAND // Введенная команда не является известной метакомандой
 } MetaCommandResult;
 
-MetaCommandResult do_meta_command(InputBuffer *input_buffer);
+MetaCommandResult do_meta_command(InputBuffer *input_buffer, Table *table);
 
 
 
