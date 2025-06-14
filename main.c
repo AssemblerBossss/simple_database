@@ -33,10 +33,16 @@ int main(void) {
             case PREPARE_SYNTAX_ERROR:
                 printf("Syntax error. Could not parse statement.\n");
                 continue;
+            case PREPARE_STRING_TOO_LONG:
+                printf("String is too long.\n");
+                continue;
             case (PREPARE_UNRECOGNIZED_STATEMENT):
                 printf("Unrecognized keyword at start of '%s'.\n",
-                                               input_buffer->buffer);
+                       input_buffer->buffer);
                 continue;
+            case (PREPARE_NEGATIVE_ID):
+                printf("ID must be positive.\n");
+                break;
         }
 
         switch (execute_statement(&statement, table)) {

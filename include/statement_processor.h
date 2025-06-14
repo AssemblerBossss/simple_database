@@ -7,7 +7,7 @@
 #include "table.h"
 #include "Utils.h"
 
-PrepareResult prepare_insert(InputBuffer *input_biffer, Statement *statement);
+PrepareResult prepare_insert(InputBuffer *input_buffer, Statement *statement);
 PrepareResult prepare_statement(InputBuffer *input_buffer, Statement *statement);
 
 ExecuteResult execute_insert(Statement *statement, Table *table);
