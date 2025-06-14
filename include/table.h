@@ -36,6 +36,14 @@ typedef struct {
  */
 Pager *pager_open(const char *filename);
 
+/**
+ * @brief Получает страницу из кеша или загружает с диска
+ * @param pager Указатель на структуру Pager
+ * @param page_number Номер страницы (0-based)
+ * @return Указатель на страницу или NULL при ошибке
+ */
+void *get_page(Pager *pager, uint32_t page_number);
+
 Table *db_open(const char *filename);
 
 void free_table(Table *table);

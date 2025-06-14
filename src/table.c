@@ -46,14 +46,46 @@ void free_table(Table *table) {
 }
 
 
+void *get_page(Pager *pager, uint32_t page_number) {
+    if (page_number >= TABLE_MAX_PAGES) {
+        printf("Tried to fetch page_number out of bounds. %d", TABLE_MAX_PAGES);
+        exit(EXIT_FAILURE);
+    }
+
+    if (pager->pages[page_number] == NULL) {
+        // Cache miss. Allocate memory and load from file
+        void *page = malloc(PAGE_SIZE);
+        if (!page) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        uint32_t num_pages = pager->file_length / PAGE_SIZE;
+
+        // We might save a partial page at the end of the file
+        if (pager->file_length % PAGE_SIZE) {
+            num_pages += 1;
+        }
+
+        if (page_number <= num_pages) {
+            lseek(pager->file_descriptor, page_number * PAGE_SIZE, SEEK_SET);
+            ssize_t bytes_read = read(pager->file_descriptor, page, PAGE_SIZE);
+            if (bytes_read == -1) {
+                printf("Error reading file.");
+                free(page);
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        pager->pages[page_number] = page;
+    }
+    return pager->pages[page_number];
+}
+
 void *row_slot(Table *table, uint32_t row_number) {
     uint32_t page_number = row_number / ROWS_PER_PAGE;
-    void *page = table->pages[page_number];
 
-    if (page == NULL) {
-        // Allocate memory only when we try to access page
-        page = table->pages[page_number] = malloc(PAGE_SIZE);
-    }
+    void *page = get_page(table->pager, page_number);
 
     uint32_t row_offset = row_number % ROWS_PER_PAGE;
     uint32_t byte_offset = row_offset * ROWS_PER_PAGE;
