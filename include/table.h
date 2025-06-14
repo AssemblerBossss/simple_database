@@ -38,12 +38,22 @@ Pager *pager_open(const char *filename);
 
 /**
  * @brief Получает страницу из кеша или загружает с диска
- * @param pager Указатель на структуру Pager
- * @param page_number Номер страницы (0-based)
+ * @param[in] pager Указатель на структуру Pager
+ * @param[in] page_number Номер страницы (0-based)
  * @return Указатель на страницу или NULL при ошибке
  */
 void *get_page(Pager *pager, uint32_t page_number);
 
+/**
+ * @brief Открывает базу данных или создает новую
+ *
+ * Функция инициализирует структуру Table и связанный с ней Pager для работы с файлом базы данных.
+ * Если файл существует, вычисляет количество строк на основе его размера.
+ *
+ * @param[in] filename Имя файла базы данных
+ * @return Указатель на созданную структуру Table
+ *
+ */
 Table *db_open(const char *filename);
 
 void free_table(Table *table);

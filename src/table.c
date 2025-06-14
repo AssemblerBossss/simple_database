@@ -30,8 +30,11 @@ Pager *pager_open(const char *filename) {
 
 Table *db_open(const char *filename) {
     Pager *pager = pager_open(filename);
+
+    // Вычисление количества строк в базе
     uint32_t num_rows = pager->file_length / ROW_SIZE;
 
+    // Выделение памяти для структуры Table
     Table *table = (Table*)malloc(sizeof(Table));
     table->pager = pager;
     table->num_of_rows = num_rows;
@@ -56,7 +59,7 @@ void *get_page(Pager *pager, uint32_t page_number) {
         // Cache miss. Allocate memory and load from file
         void *page = malloc(PAGE_SIZE);
         if (!page) {
-            fprintf(stderr, "Memory allocation failed\n");
+            printf("Memory allocation failed\n");
             exit(EXIT_FAILURE);
         }
 
