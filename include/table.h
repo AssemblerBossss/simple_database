@@ -10,9 +10,9 @@
 #define TABLE_MAX_ROWS  (ROWS_PER_PAGE * TABLE_MAX_PAGES)
 
 typedef struct {
-    int file_descriptor;
-    uint32_t file_length;
-    void *pages[TABLE_MAX_PAGES]
+    int file_descriptor;          // Дескриптор открытого файла
+    uint32_t file_length;         // Текущий размер файла
+    void *pages[TABLE_MAX_PAGES]  // Массив указателей на загруженные в память страницы данных
 } Pager;
 
 
@@ -20,6 +20,21 @@ typedef struct {
     uint32_t num_of_rows;
     Pager *pager;
 } Table;
+
+
+/**
+ * @brief Открывает или создает файл базы данных и инициализирует структуру Pager
+ *
+ * Функция создает новый объект Pager, который управляет доступом к файлу базы данных.
+ * При первом открытии файла инициализирует его структуру и подготавливает кеш страниц в памяти.
+ *
+ * @param[in] filename Имя файла базы данных (может не существовать)
+ * @return Указатель на инициализированную структуру Pager
+ *
+ * @warning Файл открывается с правами только для владельца (0600)
+ * @see pager_close(), Table
+ */
+Pager *pager_open(const char *filename);
 
 Table *db_open(const char *filename);
 
