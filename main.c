@@ -54,4 +54,6 @@ int main(void) {
                 break;
         }
     }
+
+    free_table(table);
 }

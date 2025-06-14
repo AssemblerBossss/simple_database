@@ -10,11 +10,18 @@
 #define TABLE_MAX_ROWS  (ROWS_PER_PAGE * TABLE_MAX_PAGES)
 
 typedef struct {
+    int file_descriptor;
+    uint32_t file_length;
+    void *pages[TABLE_MAX_PAGES]
+} Pager;
+
+
+typedef struct {
     uint32_t num_of_rows;
-    void *pages[TABLE_MAX_PAGES];
+    Pager *pager;
 } Table;
 
-Table *new_table();
+Table *db_open(const char *filename);
 
 void free_table(Table *table);
 

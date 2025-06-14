@@ -1,11 +1,11 @@
 #include "../include/table.h"
 
-Table *new_table() {
-    Table *table = (Table *) malloc(sizeof(Table));
-    table->num_of_rows = 0;
-    for (uint32_t i = 0; i < TABLE_MAX_PAGES; i++) {
-        table->pages[i] = NULL;
-    }
+Table *db_open(const char *filename) {
+    Pager *pager = pager_open(filename);
+    uint32_t num_rows = pager->file_length / ROW_SIZE;
+
+    Table *table = (Table*)malloc(sizeof(Table));
+    table->pager = pager;
     return table;
 }
 
