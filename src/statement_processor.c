@@ -61,16 +61,12 @@ ExecuteResult execute_statement(Statement *statement, Table *table)
 {
     switch (statement->type) {
         case (STATEMENT_INSERT):
-            printf("This is where we would do an insert.\n");
             return execute_insert(statement, table);
         case (STATEMENT_SELECT):
-            printf("This is where we would do a select.\n");
             return execute_select(statement, table);
         case (STATEMENT_DELETE):
-            printf("This is where we would do an delete.\n");
             break;
         case (STATEMENT_UPDATE):
-            printf("This is where we would do a update.\n");
             break;
     }
 }
