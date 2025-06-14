@@ -1,5 +1,4 @@
 #include "../include/row_serialization.h"
-#include "../include/types.h"
 #include <string.h>
 
 const uint32_t ID_SIZE = size_of_attribute(Row, id);

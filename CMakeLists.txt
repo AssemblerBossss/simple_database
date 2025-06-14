@@ -12,4 +12,5 @@ add_executable(database main.c
         include/row_serialization.h
         src/table.c
         src/row_serialization.c
+        src/statement_processor.c
 )
