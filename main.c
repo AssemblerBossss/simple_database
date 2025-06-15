@@ -9,15 +9,23 @@
 #include "include/table.h"
 
 
-int main(void) {
-    Table *table = db_open("test.db");
+int main(int argc, char* argv[]) {
+
+    if (argc < 2) {
+        printf("I think you forgot to specify the database name :/");
+        exit(EXIT_FAILURE);
+    }
+
+    char *filename = argv[1];
+    Table *table = db_open(filename);
     InputBuffer *input_buffer = new_input_buffer();
+
     while(true) {
         print_prompt();
         read_input(input_buffer);
 
         if (input_buffer->buffer[0] == '.') {
-            switch (do_meta_command(input_buffer)) {
+            switch (do_meta_command(input_buffer, table)) {
                 case META_COMMAND_SUCCESS:
                     break;
                 case META_COMMAND_UNRECOGNIZED_COMMAND:
