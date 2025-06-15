@@ -89,7 +89,6 @@ void db_close(Table *table) {
     free(table);
 }
 
-
 void *get_page(Pager *pager, uint32_t page_number) {
     if (page_number >= TABLE_MAX_PAGES) {
         printf("Tried to fetch page_number out of bounds. %d", TABLE_MAX_PAGES);
@@ -126,12 +125,37 @@ void *get_page(Pager *pager, uint32_t page_number) {
     return pager->pages[page_number];
 }
 
+void pager_flush(Pager *pager, uint32_t page_num, uint32_t size) {
+    // Validate page pointer
+    if (pager->pages[page_num] == NULL){
+        printf("Tried to flush null page\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Position file pointer at the correct offset
+    off_t offset = lseek(pager->file_descriptor, page_num * PAGE_SIZE, SEEK_SET);
+    if (offset == -1) {
+        printf("Error seeking: %d\n", errno);
+        exit(EXIT_FAILURE);
+    }
+
+    // Write page data to disk
+    ssize_t bytes_written = write(pager->file_descriptor, pager->pages[page_num], size);
+    if (bytes_written == -1) {
+        printf("Error flushing(writing): %d", errno);
+        exit(EXIT_FAILURE);
+    }
+}
+
 void *row_slot(Table *table, uint32_t row_number) {
+    // Calculate which page contains the requested row
     uint32_t page_number = row_number / ROWS_PER_PAGE;
 
+    // Get the page (either from cache or load from disk)
     void *page = get_page(table->pager, page_number);
 
+    // Calculate the row's position within the page
     uint32_t row_offset = row_number % ROWS_PER_PAGE;
-    uint32_t byte_offset = row_offset * ROWS_PER_PAGE;
+    uint32_t byte_offset = row_offset * ROW_SIZE;
     return page + byte_offset;
 }

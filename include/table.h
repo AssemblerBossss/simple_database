@@ -10,15 +10,15 @@
 #define TABLE_MAX_ROWS  (ROWS_PER_PAGE * TABLE_MAX_PAGES)
 
 typedef struct {
-    int file_descriptor;          // Дескриптор открытого файла
-    uint32_t file_length;         // Текущий размер файла
-    void *pages[TABLE_MAX_PAGES]  // Массив указателей на загруженные в память страницы данных
+    int file_descriptor;          ///< Дескриптор открытого файла
+    uint32_t file_length;         ///< Текущий размер файла
+    void *pages[TABLE_MAX_PAGES]; ///< Массив указателей на загруженные в память страницы (NULL если страница не загружена)
 } Pager;
 
 
 typedef struct {
-    uint32_t num_of_rows;
-    Pager *pager;
+    uint32_t num_of_rows;   ///< Текущее количество строк в таблице
+    Pager *pager;           ///< Указатель на менеджер страничного доступа
 } Table;
 
 
@@ -70,6 +70,29 @@ Table *db_open(const char *filename);
  */
 void db_close(Table *table);
 
+/**
+ * @brief Записывает страницу данных из памяти на диск
+ *
+ * Функция выполняет сброс (flush) указанной страницы из кеша в памяти
+ * в соответствующий участок файла базы данных.
+ *
+ * @param[in] pager Указатель на структуру Pager
+ * @param[in] page_num Номер страницы для записи (0-based)
+ * @param[in] size Количество байт для записи
+ */
+void pager_flush(Pager *pager, uint32_t page_num, uint32_t size);
+
+/**
+ * @brief Возвращает указатель на указанную строку в таблице
+ *
+ * @param[in] table Указатель на структуру таблицы
+ * @param[in] row_number Номер строки (0-based)
+ * @return Указатель на начало данных строки в памяти
+ *
+ * @note Использует страничную организацию данных:
+ *       - ROWS_PER_PAGE строк на одной странице
+ *       - Автоматически загружает страницы при необходимости
+ */
 void* row_slot(Table *table, uint32_t row_number);
 
 #endif //DATABASE_TABLE_H
