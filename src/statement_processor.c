@@ -59,8 +59,12 @@ ExecuteResult execute_insert(Statement *statement, Table *table) {
     }
 
     Row *row_to_insert = &(statement->row_to_insert);
-    serialize_row(row_to_insert, row_slot(table, table->num_of_rows));
+    Cursor *cursor = table_end(table);
+
+    serialize_row(row_to_insert, cursor_value(cursor));
     table->num_of_rows += 1;
+
+    free(cursor);
 
     return EXECUTE_SUCCESS;
 }

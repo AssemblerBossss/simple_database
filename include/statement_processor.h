@@ -4,7 +4,7 @@
 #include "input_buffer.h"
 #include "statement.h"
 #include "prepare_result.h"
-#include "table.h"
+#include "cursor.h"
 #include "Utils.h"
 
 /**
