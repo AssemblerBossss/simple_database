@@ -76,6 +76,7 @@ ExecuteResult execute_select(Statement *statement, Table *table) {
     while (!cursor->end_of_table) {
         deserialize_row(cursor_value(cursor), &row);
         print_row(&row);
+        cursor_advance(cursor);
     }
     free(cursor);
 

@@ -36,6 +36,6 @@ void *cursor_value(Cursor *cursor) {
 void cursor_advance(Cursor *cursor) {
     cursor->num_row += 1;
     if (cursor->num_row == cursor->table->num_of_rows) {
-        cursor->end_of_table;
+        cursor->end_of_table = true;
     }
 }
