@@ -82,17 +82,5 @@ void db_close(Table *table);
  */
 void pager_flush(Pager *pager, uint32_t page_num, uint32_t size);
 
-/**
- * @brief Возвращает указатель на указанную строку в таблице
- *
- * @param[in] table Указатель на структуру таблицы
- * @param[in] row_number Номер строки (0-based)
- * @return Указатель на начало данных строки в памяти
- *
- * @note Использует страничную организацию данных:
- *       - ROWS_PER_PAGE строк на одной странице
- *       - Автоматически загружает страницы при необходимости
- */
-void* row_slot(Table *table, uint32_t row_number);
 
 #endif //DATABASE_TABLE_H

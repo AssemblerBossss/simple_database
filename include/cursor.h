@@ -29,5 +29,16 @@ Cursor *table_start(Table *table);
  */
 Cursor *table_end(Table *table);
 
+/**
+ * @brief Возвращает указатель на указанную строку в таблице
+ *
+ * @param[in] cursor Указатель на структуру Cursor
+ * @return Указатель на начало данных строки в памяти
+ */
+void* cursor_value(Cursor *cursor);
+
+
+void cursor_advance(Cursor *cursor);
+
 
 #endif //DATABASE_CURSOR_H

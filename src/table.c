@@ -146,16 +146,3 @@ void pager_flush(Pager *pager, uint32_t page_num, uint32_t size) {
         exit(EXIT_FAILURE);
     }
 }
-
-void *row_slot(Table *table, uint32_t row_number) {
-    // Calculate which page contains the requested row
-    uint32_t page_number = row_number / ROWS_PER_PAGE;
-
-    // Get the page (either from cache or load from disk)
-    void *page = get_page(table->pager, page_number);
-
-    // Calculate the row's position within the page
-    uint32_t row_offset = row_number % ROWS_PER_PAGE;
-    uint32_t byte_offset = row_offset * ROW_SIZE;
-    return page + byte_offset;
-}
