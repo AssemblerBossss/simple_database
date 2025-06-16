@@ -72,7 +72,7 @@ void db_close(Table *table) {
 
     // Close database file
     int result = close(pager->file_descriptor);
-    if (result != -1) {
+    if (result == -1) {
         printf("Error closing db file.\n");
         exit(EXIT_FAILURE);
     }

@@ -8,9 +8,8 @@ add_executable(database main.c
         src/Utils.c
         src/command_processing.c
         src/statement_processor.c
-        include/table.h
-        include/row_serialization.h
         src/table.c
         src/row_serialization.c
         src/statement_processor.c
+        src/cursor.c
 )
