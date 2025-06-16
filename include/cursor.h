@@ -22,5 +22,12 @@ typedef struct {
  */
 Cursor *table_start(Table *table);
 
+/**
+ * @brief Создает курсор в конце таблицы
+ * @param[in] table Указатель на таблицу для итерации
+ * @return Указатель на новый курсор
+ */
+Cursor *table_end(Table *table);
+
 
 #endif //DATABASE_CURSOR_H
