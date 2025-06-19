@@ -52,12 +52,25 @@ static const uint32_t LEAF_NODE_HEADER_SIZE = COMMON_NODE_HEADER_SIZE + LEAF_NOD
 /*
 * Leaf Node Body Layout
 */
+/* Size of the key in bytes (fixed to 4 bytes for uint32_t) */
 static const uint32_t LEAF_NODE_KEY_SIZE = sizeof(uint32_t);
+
+/* Key always starts at offset 0 within the cell */
 static const uint32_t LEAF_NODE_KEY_OFFSET = 0;
+
+/* Size of the value (serialized row size) */
 static const uint32_t LEAF_NODE_VALUE_SIZE = ROW_SIZE;
+
+/* Value starts immediately after the key */
 static const uint32_t LEAF_NODE_VALUE_OFFSET = LEAF_NODE_KEY_OFFSET + LEAF_NODE_KEY_SIZE;
+
+/* Total size of a single cell (key + value) */
 static const uint32_t LEAF_NODE_CELL_SIZE = LEAF_NODE_KEY_SIZE + LEAF_NODE_VALUE_SIZE;
+
+/* Available space for cells after accounting for header */
 static const uint32_t LEAF_NODE_SPACE_FOR_CELLS = PAGE_SIZE - LEAF_NODE_HEADER_SIZE;
+
+/* Maximum number of cells that can fit in a leaf node */
 static const uint32_t LEAF_NODE_MAX_CELL = LEAF_NODE_SPACE_FOR_CELLS / LEAF_NODE_CELL_SIZE;
 
 
@@ -65,5 +78,45 @@ typedef enum {
     NODE_INTERNAL, ///< Node that stores keys and pointers to child nodes
     NODE_LEAF      ///< Leaf node that stores key/value pairs (actual data)
 } NodeType;
+
+
+/**
+ * @brief Get a pointer to the number of cells in a leaf node
+ *
+ * @param node Pointer to the start of the leaf node memory block
+ * @return uint32_t* Pointer to the num_cells field (4-byte unsigned integer)
+ */
+uint32_t* leaf_node_num_cells(void *node);
+
+/**
+ * @brief Get a pointer to a definite cell in a leaf node
+ *
+ * @param node Pointer to the start of the leaf node memory block
+ * @param cell_num Zero-based index of the cell to access
+ * @return void* Pointer to the beginning of the specified cell
+ * @note Does not perform bounds checking - caller must ensure cell_num is valid
+ */
+void* leaf_node_cell(void *node, uint32_t cell_num);
+
+/**
+ * @brief Get a pointer to the key within a specific cell
+ *
+ * @param node Pointer to the start of the leaf node memory block
+ * @param cell_num Zero-based index of the target cell
+ * @return void* Pointer to the key (first bytes of the cell)
+ * @see leaf_node_cell() The underlying cell access function
+ */
+void* leaf_node_key(void *node, uint32_t cell_num);
+
+/**
+ * @brief Get a pointer to the value within a specific cell
+ *
+ * @param node Pointer to the start of the leaf node memory block
+ * @param cell_num Zero-based index of the target cell
+ * @return void* Pointer to the value portion of the cell
+ * @note Value starts immediately after the key (offset by LEAF_NODE_KEY_SIZE)
+ */
+void* leaf_node_value(void *node, uint32_t cell_num);
+
 
 #endif //DATABASE_NODE_H
