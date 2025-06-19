@@ -3,11 +3,8 @@
 
 #include "types.h"
 #include "row_serialization.h"
+#include "node.h"
 
-#define TABLE_MAX_PAGES 100
-#define PAGE_SIZE       4096
-#define ROWS_PER_PAGE   (PAGE_SIZE / ROW_SIZE)
-#define TABLE_MAX_ROWS  (ROWS_PER_PAGE * TABLE_MAX_PAGES)
 
 typedef struct {
     int file_descriptor;          ///< Дескриптор открытого файла
