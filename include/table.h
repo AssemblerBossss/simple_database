@@ -10,11 +10,11 @@ typedef struct {
     int file_descriptor;          ///< Дескриптор открытого файла
     uint32_t file_length;         ///< Текущий размер файла
     void *pages[TABLE_MAX_PAGES]; ///< Массив указателей на загруженные в память страницы (NULL если страница не загружена)
+    uint32_t num_pages;
 } Pager;
 
 
 typedef struct {
-    uint32_t num_of_rows;   ///< Текущее количество строк в таблице
     Pager *pager;           ///< Указатель на менеджер страничного доступа
 } Table;
 
@@ -77,7 +77,7 @@ void db_close(Table *table);
  * @param[in] page_num Номер страницы для записи (0-based)
  * @param[in] size Количество байт для записи
  */
-void pager_flush(Pager *pager, uint32_t page_num, uint32_t size);
+void pager_flush(Pager *pager, uint32_t page_num);
 
 
 #endif //DATABASE_TABLE_H

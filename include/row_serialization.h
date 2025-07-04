@@ -5,17 +5,6 @@
 
 #define size_of_attribute(Struct, Attribute) sizeof(((Struct*)0)->Attribute)
 
-//extern const uint32_t ID_SIZE;         ///< Размер поля id в байтах
-//extern const uint32_t USERNAME_SIZE;   ///< Размер поля username в байтах
-//extern const uint32_t EMAIL_SIZE;      ///< Размер поля email в байтах
-//
-//extern const uint32_t ID_OFFSET;       ///< Смещение поля id от начала строки
-//extern const uint32_t USERNAME_OFFSET; ///< Смещение username от начала строки
-//extern const uint32_t EMAIL_OFFSET;    ///< Смещение email от начала строки
-//
-//extern const uint32_t ROW_SIZE;        ///< Полный размер сериализованной строки (всех полей)
-
-
 // Размеры полей
 #define ID_SIZE       size_of_attribute(Row, id)        ///< Размер поля id в байтах
 #define USERNAME_SIZE size_of_attribute(Row, username)  ///< Размер поля username в байтах

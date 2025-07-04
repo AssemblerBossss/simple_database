@@ -44,30 +44,14 @@ Table *db_open(const char *filename) {
 void db_close(Table *table) {
     Pager *pager = table->pager;
 
-    // Calculate number of completely filled pages
-    uint32_t num_full_pages = table->num_of_rows / ROWS_PER_PAGE;
-
     // Flush all full pages to disk
-    for(uint32_t i = 0; i < num_full_pages; i++) {
+    for(uint32_t i = 0; i < pager->num_pages; i++) {
         if (pager->pages[i] == NULL) { continue; }
 
         // Write full page to disk and free memory
-        pager_flush(pager, i, PAGE_SIZE);
+        pager_flush(pager, i);
         free(pager->pages[i]);
         pager->pages[i] = NULL;
-    }
-
-    // Отдельная обработка "дополнилнительных" строк
-    // Данная логика уйдет при переходе на B-Tree
-    uint32_t num_additional_rows = table->num_of_rows % ROWS_PER_PAGE;
-    if (num_additional_rows > 0) {
-        uint32_t page_num = num_full_pages;
-        if (pager->pages[page_num] != NULL) {
-            // Write only actual rows for partial page
-            pager_flush(pager, page_num, num_additional_rows * ROW_SIZE);
-            free(pager->pages[page_num]);
-            pager->pages[page_num] = NULL;
-        }
     }
 
     // Close database file
@@ -121,11 +105,15 @@ void *get_page(Pager *pager, uint32_t page_number) {
         }
 
         pager->pages[page_number] = page;
+
+        if (page_number >= pager->num_pages) {
+            pager->num_pages = page_number + 1;
+        }
     }
     return pager->pages[page_number];
 }
 
-void pager_flush(Pager *pager, uint32_t page_num, uint32_t size) {
+void pager_flush(Pager *pager, uint32_t page_num) {
     // Validate page pointer
     if (pager->pages[page_num] == NULL){
         printf("Tried to flush null page\n");
@@ -140,7 +128,7 @@ void pager_flush(Pager *pager, uint32_t page_num, uint32_t size) {
     }
 
     // Write page data to disk
-    ssize_t bytes_written = write(pager->file_descriptor, pager->pages[page_num], size);
+    ssize_t bytes_written = write(pager->file_descriptor, pager->pages[page_num], PAGE_SIZE);
     if (bytes_written == -1) {
         printf("Error flushing(writing): %d", errno);
         exit(EXIT_FAILURE);
