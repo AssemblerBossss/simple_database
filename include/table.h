@@ -16,6 +16,7 @@ typedef struct {
 
 typedef struct {
     Pager *pager;           ///< Указатель на менеджер страничного доступа
+    uint32_t root_page_num;
 } Table;
 
 

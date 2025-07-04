@@ -15,11 +15,17 @@ Pager *pager_open(const char *filename) {
         exit(EXIT_FAILURE);
     }
 
-    off_t file_length = lseek(_file_descriptor, 0, SEEK_END);
+    off_t _file_length = lseek(_file_descriptor, 0, SEEK_END);
 
     Pager *pager = (Pager*)malloc(sizeof(Pager));
     pager->file_descriptor = _file_descriptor;
-    pager->file_length = file_length;
+    pager->file_length = _file_length;
+    pager->num_pages = (_file_length / PAGE_SIZE);
+
+    if (_file_length % PAGE_SIZE != 0) {
+        printf("database file is not a whole number of pages. Corrupt file!");
+        exit(EXIT_FAILURE);
+    }
 
     for (uint32_t i =0; i < TABLE_MAX_PAGES; i++) {
         pager->pages[i] = NULL;
@@ -31,13 +37,15 @@ Pager *pager_open(const char *filename) {
 Table *db_open(const char *filename) {
     Pager *pager = pager_open(filename);
 
-    // Вычисление количества строк в базе
-    uint32_t num_rows = pager->file_length / ROW_SIZE;
-
     // Выделение памяти для структуры Table
     Table *table = (Table*)malloc(sizeof(Table));
     table->pager = pager;
-    table->num_of_rows = num_rows;
+    // Корень дерева всегда в странице 0
+    table->root_page_num = 0;
+    if (pager->num_pages == 0) {
+        void* root_node = get_page(pager, 0);
+        initialize_leaf_node(root_node);
+    }
     return table;
 }
 
